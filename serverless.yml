@@ -1,0 +1,43 @@
+service: serverless
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: eu-central-1
+  role: arn:aws:iam::136834474348:role/service-role/rick_and_morty_scheduled_message_sender-role-ckxv3qv7
+
+  environment:
+    table_name: telegram_chats
+
+functions:
+  index:
+    handler: bot_handler.handler
+    events:
+      - http:
+          path: /index
+          method: post
+
+  notifications:
+    handler: notifications_handler.handler
+    events:
+      - schedule: cron(0 12 ? * SUN *)
+
+resources:
+  Resources:
+    chatsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.table_name}
+        AttributeDefinitions:
+          - AttributeName: chat_id
+            AttributeType: N
+        KeySchema:
+          - AttributeName: chat_id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+plugins:
+  - serverless-python-requirements
