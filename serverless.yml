@@ -12,14 +12,14 @@ provider:
 
 functions:
   index:
-    handler: bot_handler.handler
+    handler: src/bot_handler.handler
     events:
       - http:
           path: /index
           method: post
 
   notifications:
-    handler: notifications_handler.handler
+    handler: src/notifications_handler.handler
     events:
       - schedule: cron(0 12 ? * SUN *)
 

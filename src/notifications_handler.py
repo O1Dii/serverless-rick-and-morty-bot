@@ -1,7 +1,7 @@
 import boto3
 import requests
 
-from utils import get_secret
+from src.utils import get_secret
 
 dynamodb = boto3.resource('dynamodb', region_name='eu-central-1')
 

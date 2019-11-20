@@ -2,8 +2,8 @@ from datetime import date
 
 import requests
 
-from db_commands import add_to_db, delete_from_db
-from utils import get_secret
+from src.db_commands import add_to_db, delete_from_db
+from src.utils import get_secret
 
 BOT_TOKEN = get_secret('rick-and-morty-token')
 BASE_URL = f'https://api.telegram.org/bot{BOT_TOKEN}/'

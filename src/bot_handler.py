@@ -1,6 +1,6 @@
 import json
 
-from telegram_commands import handle_command, handle_ordinary_message
+from src.telegram_commands import handle_command, handle_ordinary_message
 
 
 def handler(event, context):
