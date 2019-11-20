@@ -1,29 +1,11 @@
 from datetime import date
 
-import requests
-
 from src.db_commands import add_to_db, delete_from_db
-from src.utils import get_secret
-
-BOT_TOKEN = get_secret('rick-and-morty-token')
-BASE_URL = f'https://api.telegram.org/bot{BOT_TOKEN}/'
 
 
-def send_message(chat_id, text):
-    url = BASE_URL + 'sendMessage'
-    payload = {
-        'chat_id': chat_id,
-        'text': text
-    }
-
-    r = requests.post(url, json=payload)
-
-    return r.json()
-
-
-def handle_command(message):
-    chat_id = message['chat']['id']
-    text = message['text']
+def handle_command(bot, update):
+    chat_id = update.effective_message.chat_id
+    text = update.effective_message.text
 
     if text == '/help':
         reply = 'Этот бот создан для отправки уведомлений о новых сериях мультсериала "Рик и Морти"\n\n' + \
@@ -32,14 +14,14 @@ def handle_command(message):
                 '/unsubscribe - Отменить подписку на рассылку уведомлений\n' + \
                 '/when - Узнать, через сколько дней выходит новая серия "Рик и Морти"'
 
-        send_message(chat_id, reply)
+        bot.send_message(chat_id, reply)
 
     if text == '/subscribe':
-        send_message(chat_id, 'Вы будете получать уведомления перед выходом новых серий "Рик и Морти"')
+        bot.send_message(chat_id, 'Вы будете получать уведомления перед выходом новых серий "Рик и Морти"')
         add_to_db(chat_id)
 
     if text == '/unsubscribe':
-        send_message(chat_id, 'Вы успешно отписались от уведомлений о новых сериях "Рик и Морти"')
+        bot.send_message(chat_id, 'Вы успешно отписались от уведомлений о новых сериях "Рик и Морти"')
         delete_from_db(chat_id)
 
     if text == '/when':
@@ -59,10 +41,8 @@ def handle_command(message):
         else:
             result_string = 'Новая серия выходит сегодня'
 
-        send_message(chat_id, result_string)
+        bot.send_message(chat_id, result_string)
 
 
-def handle_ordinary_message(message):
-    chat_id = message['chat']['id']
-
-    send_message(chat_id, 'Вабба-лабба-даб-дабс!')
+def handle_ordinary_message(bot, update):
+    bot.send_message(update.effective_message.chat_id, 'Вабба-лабба-даб-дабс!')
