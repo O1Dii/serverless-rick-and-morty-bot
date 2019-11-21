@@ -4,6 +4,4 @@ client = boto3.client('ssm')
 
 
 def get_secret(key):
-    resp = client.get_parameter(Name=key)
-
-    return resp['Parameter']['Value']
+    return client.get_parameter(Name=key)['Parameter']['Value']

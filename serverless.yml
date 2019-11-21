@@ -10,6 +10,10 @@ provider:
   environment:
     table_name: telegram_chats
 
+package:
+  exclude:
+    - node_modules/**
+
 functions:
   index:
     handler: src/bot_handler.handler
