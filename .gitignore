@@ -22,3 +22,5 @@ node_modules/
 
 # IDE directories
 .idea
+
+*__pycache__*
