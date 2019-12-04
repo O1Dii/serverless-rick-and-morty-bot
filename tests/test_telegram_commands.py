@@ -1,7 +1,7 @@
 import datetime
-from datetime import date
 import sys
 import unittest
+from datetime import date
 from unittest.mock import Mock
 
 add_to_db_mock = Mock()
@@ -22,6 +22,8 @@ class NewDate(date):
 datetime.date = NewDate
 
 from src.telegram_commands import handle_command, handle_ordinary_message
+
+del sys.modules['src.db_commands']
 
 
 class TestHandleOrdinaryMessage(unittest.TestCase):

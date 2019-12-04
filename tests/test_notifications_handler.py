@@ -1,7 +1,6 @@
+import sys
 import unittest
 from unittest.mock import Mock, call
-
-import sys
 
 bot_mock = Mock(name='bot_mock')
 table_mock = Mock(name='table_mock', **{'scan.return_value': {'Items': [{'chat_id': 1}, {'chat_id': 2}]}})
@@ -11,6 +10,10 @@ sys.modules['telegram'] = Mock(**{'Bot.return_value': bot_mock})
 sys.modules['src.utils'] = Mock()
 
 from src.notifications_handler import handler
+
+del sys.modules['boto3']
+del sys.modules['telegram']
+del sys.modules['src.utils']
 
 
 class TestHandler(unittest.TestCase):

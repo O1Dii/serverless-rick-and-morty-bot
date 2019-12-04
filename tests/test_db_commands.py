@@ -1,14 +1,14 @@
-import unittest
-from unittest.mock import Mock, call
-
 import sys
-
+import unittest
+from unittest.mock import Mock
 
 table_mock = Mock(name='table_mock')
 dynamodb_mock = Mock(name='dynamodb_mock', **{'Table.return_value': table_mock})
 sys.modules['boto3'] = Mock(name='boto3_mock', **{'resource.return_value': dynamodb_mock})
 
 from src.db_commands import add_to_db, delete_from_db
+
+del sys.modules['boto3']
 
 
 class TestDbCommands(unittest.TestCase):
